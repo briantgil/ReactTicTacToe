@@ -9,9 +9,10 @@
 import React, {useState} from 'react';
 
 export default function Game() {
-  const [xIsNext, setXIsNext] = useState(true);
+  //const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [curMove, setCurMove] = useState(0);
+  const xIsNext = curMove % 2 === 0;
   //const currentSquares = history[history.length - 1];
   const currentSquares = history[curMove];
 
@@ -20,12 +21,12 @@ export default function Game() {
     const nextHistory = [...history.slice(0, curMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurMove(nextHistory.length - 1);
-    setXIsNext(!xIsNext);
+    //setXIsNext(!xIsNext);
   }
 
   function jumpTo(nextMove) {
     setCurMove(nextMove);
-    setXIsNext(nextMove % 2 === 0);
+    //setXIsNext(nextMove % 2 === 0);
   }
 
   const moves = history.map((squares, move) => {
