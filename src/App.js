@@ -12,6 +12,7 @@ export default function Game() {
   //const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [curMove, setCurMove] = useState(0);
+  const [sortDesc, setSortDesc] = useState(false);
   const xIsNext = curMove % 2 === 0;
   //const currentSquares = history[history.length - 1];
   const currentSquares = history[curMove];
@@ -28,6 +29,10 @@ export default function Game() {
     setCurMove(nextMove);
     //setXIsNext(nextMove % 2 === 0);
   }
+
+  function handleSort(){
+    setSortDesc(!sortDesc);
+  }  
 
   const moves = history.map((squares, move) => {
     let description;
@@ -57,7 +62,12 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+        <ol>{sortDesc ? moves : moves.reverse()}</ol>
+      </div>
+      <div className="sort-info">
+        <button onClick={handleSort}>
+              Sort by: {sortDesc ? "Descending" : "Asending"}
+        </button>
       </div>
     </div>
   );
