@@ -10,18 +10,20 @@ import React, {useState} from 'react';
 
 export default function Game() {
   //const [xIsNext, setXIsNext] = useState(true);
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([Array(9).fill(null)]);  //???
   const [curMove, setCurMove] = useState(0);
   const [sortDesc, setSortDesc] = useState(false);
+  const [positions, setPositions] = useState(Array(0));
   const xIsNext = curMove % 2 === 0;
   //const currentSquares = history[history.length - 1];
   const currentSquares = history[curMove];
 
-  function handlePlay(nextSquares) {
+  function handlePlay(nextSquares, pos) {
     //setHistory([...history, nextSquares]);
     const nextHistory = [...history.slice(0, curMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurMove(nextHistory.length - 1);
+    setPositions([...positions, [pos]])  //FIXME: back history
     //setXIsNext(!xIsNext);
   }
 
@@ -38,6 +40,9 @@ export default function Game() {
     let description;
     if (curMove === move){
       description = `You are at move # ${move}`;
+      if (move != 0) {
+        description += ` ${positions[move-1]}`;
+      }
       return (
       <li key={move}>
       {description}
@@ -45,7 +50,7 @@ export default function Game() {
     } 
     
     if (move > 0) {
-      description = `Go to move # ${move}`;
+      description = `Go to move # ${move} ${positions[move-1]}`;
     } else {
       description = 'Go to game start';
     }
@@ -90,9 +95,11 @@ function Board({xIsNext, squares, onPlay}) {
     } else {
       nextSquares[i] = "O";
     }
+    let pos = findRowCol(i);
      //setSquares(nextSquares);
      //setXIsNext(!xIsNext);
-     onPlay(nextSquares);
+     onPlay(nextSquares, pos);
+
   }
 
   const winner = calculateWinner(squares);
@@ -158,4 +165,18 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function findRowCol(square){
+  const board = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8]
+  ];
+
+  for (let i in board){
+    if (board[i].indexOf(square) >= 0){
+      return `(${i},${board[i].indexOf(square)})`;
+    }
+  }  
 }
