@@ -10,7 +10,7 @@ import React, {useState} from 'react';
 
 export default function Game() {
   //const [xIsNext, setXIsNext] = useState(true);
-  const [history, setHistory] = useState([Array(9).fill(null)]);  //???
+  const [history, setHistory] = useState([Array(9).fill(null)]);  //2-d array
   const [curMove, setCurMove] = useState(0);
   const [sortDesc, setSortDesc] = useState(false);
   const [positions, setPositions] = useState(Array(0));
@@ -21,9 +21,15 @@ export default function Game() {
   function handlePlay(nextSquares, pos) {
     //setHistory([...history, nextSquares]);
     const nextHistory = [...history.slice(0, curMove + 1), nextSquares];
-    setHistory(nextHistory);
+    setHistory(nextHistory);  //2-d array
     setCurMove(nextHistory.length - 1);
-    setPositions([...positions, [pos]])  //FIXME: back history
+    let nextPositions;
+    if (curMove > 0){
+      nextPositions = [...positions.slice(0, curMove), pos];
+    } else {
+      nextPositions = [...positions.slice(0, curMove), pos];
+    }
+    setPositions(nextPositions);  //FIXME: back history
     //setXIsNext(!xIsNext);
   }
 
@@ -180,3 +186,4 @@ function findRowCol(square){
     }
   }  
 }
+
