@@ -94,3 +94,7 @@ body {
 .sort-info {
   margin-left: 20px;
 }
+
+.winner-square {
+  background-color: #27DACB;
+}
